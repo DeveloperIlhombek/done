@@ -1,4 +1,6 @@
+import { useEffect, useState } from 'react'
 import { cn } from '../../lib/utils'
+import { getTasks, type ITaskResponse } from '../../services/task'
 import { Button } from '../ui/button'
 import Header from './header'
 
@@ -72,6 +74,15 @@ const stats = [
 ]
 
 function Dashboard() {
+	const [tasks, settasks] = useState<ITaskResponse[]>([])
+	useEffect(() => {
+		const token = localStorage.getItem('access_token') as string
+		const fetchtask = async () => {
+			const responce = await getTasks(token)
+			settasks(responce)
+		}
+		fetchtask()
+	}, [])
 	return (
 		<>
 			<Header />
@@ -122,6 +133,16 @@ function Dashboard() {
 							</div>
 						))}
 					</div>
+
+					{tasks &&
+						tasks.map((vazifa, ind) => {
+							return (
+								<div key={ind}>
+									<h1 className='text-gray-100'> {vazifa.title}</h1>
+									<p className='text-gray-300'>{vazifa.created_at}</p>
+								</div>
+							)
+						})}
 				</div>
 			</section>
 		</>

@@ -11,7 +11,7 @@ export interface LoginRequest {
 }
 
 export interface LoginResponse {
-	accessToken: string
+	access_token: string
 	token_type: string
 }
 export interface ErrorResponse {
@@ -30,7 +30,7 @@ export const loginUser = async (body: LoginRequest): Promise<LoginResponse> => {
 
 	const data: LoginResponse = await res.json()
 	// Set localStorage item to indicate that the user is logged in
-	localStorage.setItem('token',data.accessToken )
+	localStorage.setItem('access_token', data.access_token)
 
 	if (!res.ok) {
 		throw new Error((data as ErrorResponse).detail || 'Login error')
@@ -38,3 +38,4 @@ export const loginUser = async (body: LoginRequest): Promise<LoginResponse> => {
 
 	return data as LoginResponse
 }
+
